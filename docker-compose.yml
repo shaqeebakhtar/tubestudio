@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: tubestudiodb
+    image: postgres:15
+    volumes:
+      - tubestudiodata:/var/lib/postgresql/data
+    ports:
+      - '5500:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tubestudio
+      POSTGRES_PASSWORD: password
+
+volumes:
+  tubestudiodata:
