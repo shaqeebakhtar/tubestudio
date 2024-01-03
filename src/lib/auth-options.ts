@@ -9,6 +9,14 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          scope:
+            'openid https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload',
+        },
+      },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
@@ -16,7 +24,7 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    jwt: async ({ token, profile }) => {
+    jwt: async ({ token, profile, account }) => {
       const user = await db.user.findFirst({
         where: {
           email: profile?.email,
@@ -36,4 +44,5 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
+  debug: true,
 };
