@@ -7,8 +7,8 @@ const Navbar = () => {
     <nav className="flex items-center justify-between bg-secondary py-2 px-4 w-full border-b-2 border-background">
       <div className="flex items-center space-x-3">
         <SidebarToggle />
-        <p className="hidden md:block font-black uppercase tracking-wide">
-          TubeStudio
+        <p className="hidden md:block font-black uppercase tracking-wider text-lg">
+          <span className="text-primary">Tube</span>Studio
         </p>
       </div>
       <div className="flex items-center  space-x-4">

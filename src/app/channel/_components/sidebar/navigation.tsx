@@ -12,7 +12,7 @@ const Navigation = () => {
   const channelId = 'test';
 
   const baseClass =
-    'h-12 flex items-center space-x-3 w-full hover:bg-zinc-900 px-6 py-3 text-zinc-400 font-medium';
+    'h-12 flex items-center space-x-3 w-full hover:bg-zinc-900 px-6 py-3 text-sm text-zinc-400 font-medium';
 
   return (
     <nav className="flex flex-col items-center">
