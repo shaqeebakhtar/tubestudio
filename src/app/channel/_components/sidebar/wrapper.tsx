@@ -9,8 +9,8 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <aside
       className={cn(
-        'fixed left-0 z-50 h-full w-60 border-r-2 border-zinc-950 bg-zinc-800 pt-6',
-        collapsed && 'w-16'
+        'fixed left-0 z-50 h-full w-60 border-r-2 border-zinc-950 bg-secondary pt-4',
+        collapsed && 'w-[72px]'
       )}
     >
       {children}
