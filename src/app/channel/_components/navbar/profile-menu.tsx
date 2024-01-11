@@ -3,25 +3,32 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Tv } from 'lucide-react';
+import { getServerSession } from 'next-auth';
 import Link from 'next/link';
+import LogoutButton from './logout-button';
+import { Tv } from 'lucide-react';
+import { authOptions } from '@/lib/auth-options';
 
 const ProfileMenu = async () => {
+  const session = await getServerSession(authOptions);
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="w-9 h-9">
-              <AvatarImage src={''} />
+              <AvatarImage src={session?.user.image || ''} />
               <AvatarFallback className="font-semibold bg-zinc-600 uppercase">
-                SA
+                {session && session.user && session?.user?.name![0]}
+                {session &&
+                  session.user &&
+                  session?.user?.name![session?.user?.name?.length! - 1]}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -29,14 +36,19 @@ const ProfileMenu = async () => {
         <DropdownMenuContent className="w-56 font-medium" align="end">
           <DropdownMenuLabel className="flex items-center space-x-2 py-3">
             <Avatar className="w-9 h-9">
-              <AvatarImage src={''} />
+              <AvatarImage src={session?.user.image || ''} />
               <AvatarFallback className="font-semibold bg-zinc-600 uppercase">
-                SA
+                {session && session.user && session?.user?.name![0]}
+                {session &&
+                  session.user &&
+                  session?.user?.name![session?.user?.name?.length! - 1]}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col space-y-1 overflow-hidden">
-              <p className="text-sm truncate">shaqeeb</p>
-              <p className="text-xs leading-none truncate">shaqeeb@gmail.com</p>
+              <p className="text-sm truncate">{session?.user.name}</p>
+              <p className="text-xs leading-none truncate">
+                {session?.user.email}
+              </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -47,11 +59,7 @@ const ProfileMenu = async () => {
             </DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
-
-          <DropdownMenuItem>
-            <LogOut className="w-4 h-4 mr-2 rotate-180" />
-            Log out
-          </DropdownMenuItem>
+          <LogoutButton />
         </DropdownMenuContent>
       </DropdownMenu>
     </>
