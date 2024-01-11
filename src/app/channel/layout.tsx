@@ -5,10 +5,12 @@ import Container from './_components/container';
 
 const ChannelLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className="h-full">
       <Navbar />
-      <Sidebar />
-      <Container>{children}</Container>
+      <div className="flex">
+        <Sidebar />
+        <Container>{children}</Container>
+      </div>
     </div>
   );
 };

@@ -13,8 +13,9 @@ export const authOptions: AuthOptions = {
         params: {
           prompt: 'consent',
           access_type: 'offline',
+          response_type: 'code',
           scope:
-            'openid https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload',
+            'openid email profile https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload',
         },
       },
     }),
@@ -24,14 +25,20 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    jwt: async ({ token, profile, account }) => {
+    jwt: async ({ token, account }) => {
       const user = await db.user.findFirst({
         where: {
-          email: profile?.email,
+          email: token?.email,
         },
       });
 
-      if (user) token.id = user.id;
+      if (account) {
+        token.accessToken = account.access_token as string;
+      }
+
+      if (user) {
+        token.id = user.id;
+      }
 
       return token;
     },
@@ -39,10 +46,11 @@ export const authOptions: AuthOptions = {
     session: async ({ session, token }) => {
       if (session?.user) {
         session.user.id = token.id as string;
+        session.user.accessToken = token.accessToken as string;
       }
 
       return session;
     },
   },
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
 };

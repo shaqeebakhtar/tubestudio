@@ -7,7 +7,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   const { collapsed } = useSidebar((state) => state);
 
   return (
-    <div className={cn('flex-1', collapsed ? 'ml-[72px]' : 'md:ml-60')}>
+    <div className={cn('flex-1', collapsed ? 'pl-[72px]' : 'pl-60')}>
       {children}
     </div>
   );
