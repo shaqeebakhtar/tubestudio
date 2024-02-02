@@ -26,11 +26,64 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model User {
-  id            String    @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?         @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
+  channels      ChannelEditor[]
+
+  createdAt DateTime @default(now())
+}
+
+model Channel {
+  id           String @id @default(cuid())
+  access_token String @db.Text
+
+  editors ChannelEditor[]
+  invites ChannelInvite[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChannelInvite {
+  email     String
+  expires   DateTime
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  channelId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([email, channelId])
+  @@index([channelId])
+}
+
+model ChannelEditor {
+  id   String @id @default(cuid())
+  role Role   @default(editor)
+
+  Channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  channelId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  owner
+  editor
 }
